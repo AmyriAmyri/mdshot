@@ -23,36 +23,40 @@ Render beautiful screenshots from Markdown. Powered by [Takumi](https://github.c
 
 ### CLI
 
+```
+Usage:
+  mdshot <input> [output.png] [options]
+
+Input:
+  file.md          Local markdown file
+  npm:<package>    README from npm registry
+  gh:<owner/repo>  README from GitHub repo
+
+Options:
+  -w, --watch              Watch for file changes
+  -s, --select <pattern>   Markdown title selector
+      --width <px>          Image width
+      --height <px>         Image height
+  -t, --title <text>        Title text
+  -d, --description <text>  Description text
+  -h, --help               Show this help
+```
+
+**Examples:**
+
 ```bash
+# Render a local markdown file
 npx mdshot input.md
-```
 
-```bash
+# Render with custom output path
 npx mdshot input.md output.png
-```
 
-You can also render README directly from npm packages or GitHub repos:
-
-```bash
 # From an npm package
 npx mdshot npm:vue
 
 # From a GitHub repo
 npx mdshot gh:unjs/mdshot
-```
 
-**Options:**
-
-| Flag | Description |
-| --- | --- |
-| `--watch`, `-w` | Watch for file changes and re-render |
-| `--select <pattern>`, `-s <pattern>` | Select sections by heading (regex) |
-| `--width <px>` | Image width in pixels (default: `1280`) |
-| `--height <px>` | Image height in pixels (default: `640`) |
-
-**Examples:**
-
-```bash
 # Render a specific section
 npx mdshot README.md --select "Installation"
 
@@ -81,15 +85,17 @@ const png = await mdshot(markdown, {
 
 **Options:**
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `width` | `number` | `1280` | Image width in pixels |
-| `height` | `number` | `640` | Image height in pixels |
-| `format` | `OutputFormat` | `"png"` | Output format |
-| `devicePixelRatio` | `number` | `2` | Device pixel ratio (retina) |
-| `theme` | `Partial<Theme>` | - | Custom theme overrides |
-| `fonts` | `Font[]` | - | Additional fonts to load |
-| `select` | `string` | - | Regex pattern to select sections by heading |
+| Option             | Type             | Default | Description                                 |
+| ------------------ | ---------------- | ------- | ------------------------------------------- |
+| `width`            | `number`         | `1280`  | Image width in pixels                       |
+| `height`           | `number`         | `640`   | Image height in pixels                      |
+| `format`           | `OutputFormat`   | `"png"` | Output format                               |
+| `devicePixelRatio` | `number`         | `2`     | Device pixel ratio (retina)                 |
+| `theme`            | `Partial<Theme>` | -       | Custom theme overrides                      |
+| `fonts`            | `Font[]`         | -       | Additional fonts to load                    |
+| `select`           | `string`         | -       | Regex pattern to select sections by heading |
+| `title`            | `string`         | -       | Override or add the first heading title     |
+| `description`      | `string`         | -       | Description line shown below the title      |
 
 ## Development
 

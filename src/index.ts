@@ -80,16 +80,14 @@ export async function mdshot(markdown: string, options?: MdshotOptions): Promise
 
   const wrapper = wrapperStyle(theme);
   const border = leftBorderStyle(theme);
-  const root = wrapper && border
-    ? {
-        type: "container" as const,
-        style: wrapper,
-        children: [
-          { type: "container" as const, style: border, children: [] },
-          content,
-        ],
-      }
-    : content;
+  const root =
+    wrapper && border
+      ? {
+          type: "container" as const,
+          style: wrapper,
+          children: [{ type: "container" as const, style: border, children: [] }, content],
+        }
+      : content;
 
   const renderOpts: RenderOptions = {
     format: options?.format ?? "png",

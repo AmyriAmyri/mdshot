@@ -2,44 +2,69 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { watch } from "node:fs/promises";
 import { resolve } from "node:path";
+import { parseArgs } from "node:util";
 import { mdshot } from "./index.ts";
 
-const args = process.argv.slice(2);
-const watchMode = args.includes("--watch") || args.includes("-w");
+// ANSI colors
+const c = {
+  bold: (s: string) => `\x1B[1m${s}\x1B[22m`,
+  cyan: (s: string) => `\x1B[36m${s}\x1B[39m`,
+  green: (s: string) => `\x1B[32m${s}\x1B[39m`,
+  magenta: (s: string) => `\x1B[35m${s}\x1B[39m`,
+  red: (s: string) => `\x1B[31m${s}\x1B[39m`,
+  dim: (s: string) => `\x1B[2m${s}\x1B[22m`,
+};
 
-let select: string | undefined;
-let width: number | undefined;
-let height: number | undefined;
-let title: string | undefined;
-let description: string | undefined;
-const rest: string[] = [];
-for (let i = 0; i < args.length; i++) {
-  const arg = args[i]!;
-  if (arg === "--watch" || arg === "-w") continue;
-  if (arg === "--select" || arg === "-s") {
-    select = args[++i];
-    continue;
-  }
-  if (arg === "--width") {
-    width = Number(args[++i]);
-    continue;
-  }
-  if (arg === "--height") {
-    height = Number(args[++i]);
-    continue;
-  }
-  if (arg === "--title" || arg === "-t") {
-    title = args[++i];
-    continue;
-  }
-  if (arg === "--description" || arg === "-d") {
-    description = args[++i];
-    continue;
-  }
-  rest.push(arg);
+const { values, positionals } = parseArgs({
+  args: process.argv.slice(2),
+  allowPositionals: true,
+  options: {
+    watch: { type: "boolean", short: "w", default: false },
+    select: { type: "string", short: "s" },
+    width: { type: "string" },
+    height: { type: "string" },
+    title: { type: "string", short: "t" },
+    description: { type: "string", short: "d" },
+    help: { type: "boolean", short: "h", default: false },
+  },
+});
+
+if (values.help || !positionals[0]) {
+  console.log(`
+${c.bold("mdshot")} ${c.dim("— markdown to screenshot")}
+
+${c.cyan("Usage:")}
+  ${c.green("mdshot")} ${c.magenta("<input>")} ${c.dim("[output.png]")} ${c.dim("[options]")}
+
+${c.cyan("Input:")}
+  ${c.dim("file.md")}          Local markdown file
+  ${c.dim("npm:<package>")}    README from npm registry
+  ${c.dim("gh:<owner/repo>")}  README from GitHub repo
+
+${c.cyan("Options:")}
+  ${c.magenta("-w, --watch")}              Watch for file changes
+  ${c.magenta("-s, --select")} ${c.dim("<pattern>")}   Markdown title selector
+  ${c.magenta("    --width")} ${c.dim("<px>")}          Image width
+  ${c.magenta("    --height")} ${c.dim("<px>")}         Image height
+  ${c.magenta("-t, --title")} ${c.dim("<text>")}        Title text
+  ${c.magenta("-d, --description")} ${c.dim("<text>")}  Description text
+  ${c.magenta("-h, --help")}               Show this help
+`);
+  process.exit(positionals[0] ? 0 : 1);
 }
 
-async function resolveInput(input: string): Promise<{ markdown: string; outputPath: string; watchPath?: string; defaultTitle?: string; defaultDescription?: string }> {
+const width = values.width ? Number(values.width) : undefined;
+const height = values.height ? Number(values.height) : undefined;
+
+async function resolveInput(
+  input: string,
+): Promise<{
+  markdown: string;
+  outputPath: string;
+  watchPath?: string;
+  defaultTitle?: string;
+  defaultDescription?: string;
+}> {
   if (input === "npm:" || input === "gh:") {
     throw new Error(`Invalid input: "${input}" — missing package or repo name`);
   }
@@ -55,7 +80,12 @@ async function resolveInput(input: string): Promise<{ markdown: string; outputPa
       throw new Error(`Package "${pkg}" has no README`);
     }
     const outputPath = resolve(`${pkg.replace(/[/@]/g, "_")}.png`);
-    return { markdown: data.readme, outputPath, defaultTitle: pkg, defaultDescription: data.description ?? undefined };
+    return {
+      markdown: data.readme,
+      outputPath,
+      defaultTitle: pkg,
+      defaultDescription: data.description ?? undefined,
+    };
   }
   const ghMatch = input.match(/^gh:([^/]+\/.+)$/);
   if (input.startsWith("gh:") && !ghMatch) {
@@ -73,50 +103,55 @@ async function resolveInput(input: string): Promise<{ markdown: string; outputPa
       throw new Error(`Failed to fetch README: ${readmeRes.status} ${readmeRes.statusText}`);
     }
     const markdown = await readmeRes.text();
-    const repoData = repoRes?.ok ? (await repoRes.json()) as { description?: string } : undefined;
+    const repoData = repoRes?.ok ? ((await repoRes.json()) as { description?: string }) : undefined;
     const outputPath = resolve(`${repo.replace(/[/@]/g, "_")}.png`);
-    return { markdown, outputPath, defaultTitle: repo, defaultDescription: repoData?.description ?? undefined };
+    return {
+      markdown,
+      outputPath,
+      defaultTitle: repo,
+      defaultDescription: repoData?.description ?? undefined,
+    };
   }
   const inputPath = resolve(input);
   const markdown = readFileSync(inputPath, "utf8");
-  const outputPath = resolve(rest[1] ? rest[1] : input.replace(/\.md$/, ".png"));
+  const outputPath = resolve(positionals[1] ? positionals[1] : input.replace(/\.md$/, ".png"));
   return { markdown, outputPath, watchPath: inputPath };
 }
 
-const input = rest[0];
-
-if (!input) {
-  console.error("Usage: mdshot <input.md|npm:package|gh:owner/repo> [output.png] [--watch] [--select <pattern>] [--width <px>] [--height <px>] [--title <text>] [--description <text>]");
-  process.exit(1);
-}
-
+const input = positionals[0];
 const resolved = await resolveInput(input);
-const outputPath = rest[1] ? resolve(rest[1]) : resolved.outputPath;
+const outputPath = positionals[1] ? resolve(positionals[1]) : resolved.outputPath;
 
 async function render() {
   const { markdown } = resolved.watchPath
     ? { markdown: readFileSync(resolved.watchPath, "utf8") }
     : resolved;
-  const buf = await mdshot(markdown, { select, width, height, title: title ?? resolved.defaultTitle, description: description ?? resolved.defaultDescription });
+  const buf = await mdshot(markdown, {
+    select: values.select,
+    width,
+    height,
+    title: values.title ?? resolved.defaultTitle,
+    description: values.description ?? resolved.defaultDescription,
+  });
   writeFileSync(outputPath, buf);
-  console.log(`Screenshot saved to ${outputPath}`);
+  console.log(`${c.green("✓")} Screenshot saved to ${c.cyan(outputPath)}`);
 }
 
 await render();
 
-if (watchMode) {
+if (values.watch) {
   if (!resolved.watchPath) {
-    console.error("Watch mode is not supported for remote inputs");
+    console.error(`${c.red("✗")} Watch mode is not supported for remote inputs`);
     process.exit(1);
   }
-  console.log(`Watching ${resolved.watchPath} for changes...`);
+  console.log(`${c.cyan("⟳")} Watching ${c.dim(resolved.watchPath)} for changes...`);
   const watcher = watch(resolved.watchPath);
   for await (const event of watcher) {
     if (event.eventType === "change") {
       try {
         await render();
       } catch (err) {
-        console.error("Render error:", err);
+        console.error(`${c.red("✗")} Render error:`, err);
       }
     }
   }

@@ -4,6 +4,9 @@
   "description": "",
   "license": "MIT",
   "repository": "pi0/mdshot",
+  "bin": {
+    "mdshot": "./dist/cli.mjs"
+  },
   "files": [
     "dist",
     "fonts"
