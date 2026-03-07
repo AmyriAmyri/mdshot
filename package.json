@@ -9,11 +9,14 @@
   },
   "files": [
     "dist",
-    "fonts"
+    "assets"
   ],
   "type": "module",
   "sideEffects": false,
   "types": "./dist/index.d.mts",
+  "imports": {
+    "#assets": "./assets/index.mjs"
+  },
   "exports": {
     ".": "./dist/index.mjs"
   },
