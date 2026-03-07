@@ -56,9 +56,7 @@ ${c.cyan("Options:")}
 const width = values.width ? Number(values.width) : undefined;
 const height = values.height ? Number(values.height) : undefined;
 
-async function resolveInput(
-  input: string,
-): Promise<{
+async function resolveInput(input: string): Promise<{
   markdown: string;
   outputPath: string;
   watchPath?: string;
