@@ -46,7 +46,7 @@ mdshot <input> [output.png] [options]
 - **Build**: `obuild`
 - **Linting**: `oxlint` + `oxfmt`
 - **Package manager**: pnpm (v10.29.3)
-- **CI**: GitHub Actions — runs typecheck, vitest, lint
+- **CI**: GitHub Actions — runs typecheck, lint
 
 ## Conventions
 
